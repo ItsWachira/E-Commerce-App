@@ -8,13 +8,13 @@ const HomepageRoutes = require("./routes/Homepage");
 const connectDatabase = require("./Database/Database");
 const cookieParser = require("cookie-parser");
 const app = express();
-const port =  5000;
+
 
 //connection to DB
 
 connectDatabase();
 
-const server = app.listen(port, () => {
+const server = app.listen(process.env.port, () => {
   console.log(
     `Server is running on port http://localhost/${port}`
   );
