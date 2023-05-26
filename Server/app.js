@@ -3,8 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const UserDetailsRoutes = require("./routes/UserDetails");
-const HomepageRoutes = require("./routes/Homepage");
+const { UserDetailsRoutes, HomepageRoutes } = require("./router");
 const connectDatabase = require("./Database/Database");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -24,13 +23,12 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use("/", express.static("uploads"));
 app.use(express.json());
-app.use(express.static("public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.use("/auth", UserDetailsRoutes);
-app.use("/home", HomepageRoutes);
+app.use("/api/auth", UserDetailsRoutes);
+app.use("/api/home", HomepageRoutes);
 
 // handling uncaught Exceptions
 process.on("uncaughtException", (err) => {

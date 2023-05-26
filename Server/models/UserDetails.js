@@ -22,10 +22,15 @@ const userDetailsSchema = new Schema(
     profile_pic: {
       type: String,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     role: {
       type: String,
       default: "user",
     },
+    tokens: [{ type: Object }],
   },
   { timestamps: true }
 );

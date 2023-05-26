@@ -1,4 +1,4 @@
-import UserDetails from "./routes/UserDetails";
-import Homepage from "./routes/Homepage";
+const UserDetailsRoutes = require("./routes/UserDetails");
+const HomepageRoutes = require("./routes/Homepage");
 
-export { UserDetails, Homepage };
+module.exports = { UserDetailsRoutes, HomepageRoutes };
