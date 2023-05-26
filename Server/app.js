@@ -8,14 +8,13 @@ const connectDatabase = require("./Database/Database");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-
 //connection to DB
 
 connectDatabase();
 
-const server = app.listen(process.env.port, () => {
+const server = app.listen(process.env.APP_PORT, () => {
   console.log(
-    `Server is running on port http://localhost/${port}`
+    `Server is running on port http://localhost/${process.env.APP_PORT}`
   );
 });
 
