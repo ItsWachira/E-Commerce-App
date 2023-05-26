@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDatabase = () => {
   mongoose
-    .connect("mongodb+srv://user1:1234@nodejs-jwt-db.h2adpmh.mongodb.net/?retryWrites=true&w=majority", {
+    .connect("process.env.DBURI", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
