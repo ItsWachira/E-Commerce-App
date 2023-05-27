@@ -61,9 +61,11 @@ userDetailsSchema.statics.isThisUsernameInUse = async function (username) {
   if (!username) throw new Error("Invalid username: No username provided");
   try {
     const user = await this.findOne({ username });
-    if (user) return false;
-
-    return true;
+    if (user) {
+      return false;
+    } else {
+      return true;
+    }
   } catch (error) {
     console.log("Error inside isThisUsernameInUse method", error.message);
     return false;
@@ -74,9 +76,11 @@ userDetailsSchema.statics.isThisEmailInUse = async function (email) {
   if (!email) throw new Error("Invalid email: No email provided");
   try {
     const user = await this.findOne({ email });
-    if (user) return false;
-
-    return true;
+    if (user) {
+      return false;
+    } else {
+      return true;
+    }
   } catch (error) {
     console.log("Error inside isThisEmailInUse method", error.message);
     return false;
