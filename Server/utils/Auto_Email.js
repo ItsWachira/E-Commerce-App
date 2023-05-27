@@ -45,10 +45,11 @@ function sendVerificationEmail(id, email, res) {
     const mail_configs = {
       from: process.env.APP_EMAIL,
       to: email,
-      subject: "Powel Elss email verification",
-      text: `Verify your email to complete the signup proccess.This link will expire in 6 hours.Press ${
+      subject: "Ecommerce email verification",
+      html: `<p>Verify your email to complete the signup proccess.</p><p>This link will expire in 6 hours.</p>
+      <a href=" ${
         process.env.BASE_URL + "/verify/" + id + "/" + uniqueString
-      } to verify`,
+      }">here</a><p>to verify</p>`,
     };
 
     const saltRound = 10;
