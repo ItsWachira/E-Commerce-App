@@ -21,6 +21,14 @@ const User_Register_Page = (req, res) => {
 
 const User_Register_User = async (req, res) => {
   try {
+    const isNewUsername = await UserDetails.isThisUsernameInUse(
+      req.body.username
+    );
+    if (!isNewUsername)
+      return res.status(409).json({
+        success: false,
+        message: "A user with this username already exists",
+      });
     const isNewEmail = await UserDetails.isThisEmailInUse(req.body.email);
     if (!isNewEmail)
       return res.status(409).json({
@@ -51,7 +59,7 @@ const User_Register_User = async (req, res) => {
 
     console.log(newuser_id);
 
-    const subject = `Powel-Elss Inc. Sign up`;
+    const subject = `Ecommerce Inc. Sign up`;
     const text = `Your account has been successfully created. Please verify your email using this link`;
     sendVerificationEmail(newuser_id[0]._id, user_email, res)
       .then((result) => {
@@ -94,7 +102,7 @@ const User_Verify_User = async (req, res) => {
               UserDetails.deleteOne({ _id: userId })
                 .then(() => {
                   res.json({
-                    message: `The verificationlink has expired. Please sign in again`,
+                    message: `The verification link has expired. Please sign in again`,
                   });
                 })
                 .catch((error) => {
@@ -200,7 +208,7 @@ const User_Verified_User = (req, res) => {
 const User_Login_User = async (req, res) => {
   try {
     const saved_user = await UserDetails.findOne({
-      email: req.body.email,
+      username: req.body.username,
     });
     console.log(saved_user);
     if (saved_user.verified === true) {
