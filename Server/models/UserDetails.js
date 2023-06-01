@@ -6,18 +6,18 @@ const userDetailsSchema = new Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, "Please enter a valid username"],
     },
     phone: {
-      type: Number,
+      type: String,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Please enter a valid email address"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Please enter a valid password"],
     },
     profile_pic: {
       type: String,
