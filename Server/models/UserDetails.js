@@ -36,14 +36,15 @@ const userDetailsSchema = new Schema(
 );
 
 userDetailsSchema.pre("save", function (next) {
-  if (this.isModified("password")) {
-    bcrypt.hash(this.password, 10, (err, hash) => {
-      if (err) return next(err);
-
-      this.password = hash;
-      next();
-    });
+  if (!this.isModified("password")) {
+    next();
   }
+  bcrypt.hash(this.password, 10, (err, hash) => {
+    if (err) return next(err);
+
+    this.password = hash;
+    next();
+  });
 });
 
 userDetailsSchema.methods.comparePassword = async function (password) {

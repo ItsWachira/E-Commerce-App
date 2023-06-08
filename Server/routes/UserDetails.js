@@ -22,10 +22,11 @@ router.post(
 );
 router.post("/logout", isAuth, UserDetailsController.User_Logout_User);
 
-router.get(
-  "/verify/:userId/:uniqueString",
-  UserDetailsController.User_Verify_User
+router.post("/verifyOTP", UserDetailsController.User_Verify_OTP);
+
+router.post(
+  "/resendverificationOTP",
+  UserDetailsController.User_Resend_OTP_Code
 );
-router.get("/verified", UserDetailsController.User_Verified_User);
 
 module.exports = router;
