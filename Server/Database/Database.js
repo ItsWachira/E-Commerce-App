@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const connectDatabase = () => {
   mongoose
-    .connect(process.env.DBURI, {
+    .connect("process.env.DBURI", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

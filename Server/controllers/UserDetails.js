@@ -2,26 +2,8 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { sendEmail, sendOTPEmail } = require("../utils/Auto_Email");
 const bcrypt = require("bcrypt");
-<<<<<<< HEAD
-const UserVerification = require("../models/UserVerification");
-// why is this necessary of we aint using views in this project????
-const User_Login_Page = (req, res) => {
-  res.status(200).json({
-    success: true,
-    redirect: "/api/auth/login",
-  });
-};
-// why is this necessary of we aint using views in this project????
-const User_Register_Page = (req, res) => {
-  res.status(200).json({
-    success: true,
-    redirect: "/api/auth/register",
-  });
-};
-=======
 const UserDetails = require("../models/UserDetails");
 const UserOTPVerification = require("../models/UserOTPVerification");
->>>>>>> 15d1a957b2cd3d33b55aebbc3187e6b5585c1fee
 
 const User_Register_User = async (req, res) => {
   try {
