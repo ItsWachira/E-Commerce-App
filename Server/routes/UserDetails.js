@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const cors = require("cors");
 const UserDetailsController = require("../controllers/UserDetails");
 const {
   validateUserRegistration,
   validateUserSignIn,
   userValidation,
 } = require("../middleware/validation/UserDetails");
-const uploads = require("../multer");
+const { isAuth } = require("../middleware/Auth");
 
-router.get("/login", cors(), UserDetailsController.User_Login_Page);
-router.get("/register", cors(), UserDetailsController.User_Register_Page);
 router.post(
   "/register",
   validateUserRegistration,
@@ -23,8 +20,13 @@ router.post(
   userValidation,
   UserDetailsController.User_Login_User
 );
-router.get("/invalid-login", (req, res) => {
-  res.json({ redirect: "/auth/login" });
-});
+router.post("/logout", isAuth, UserDetailsController.User_Logout_User);
+
+router.post("/verifyOTP", UserDetailsController.User_Verify_OTP);
+
+router.post(
+  "/resendverificationOTP",
+  UserDetailsController.User_Resend_OTP_Code
+);
 
 module.exports = router;
