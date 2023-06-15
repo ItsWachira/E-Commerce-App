@@ -17,11 +17,6 @@ const Homepage_Upload_Profile_Pic = async (req, res) => {
     const fileUrl = path.join(filename);
     const profile_pic = fileUrl;
     console.log(profile_pic);
-    // const profileBuffer = req.file.buffer;
-    // const { width, height } = await sharp(profileBuffer).metadata();
-    // const profile_pic = await sharp(profileBuffer)
-    //   .resize(Math.round(width * 0.5), Math.round(height * 0.5))
-    //   .toBuffer();
 
     await UserDetails.findByIdAndUpdate(user._id, { profile_pic });
     res.status(201).json({
