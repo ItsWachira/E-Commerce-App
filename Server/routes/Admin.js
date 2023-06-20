@@ -6,6 +6,7 @@ const {
   validateProductDetails,
   productValidation,
 } = require("../middleware/validation/Products");
+const uploads = require("../multer");
 
 router.get(
   "/",
@@ -21,6 +22,7 @@ router.post(
   isAuth,
   isVerified,
   isAdmin,
+  uploads.single("product_photo"),
   AdminControllers.Admin_Add_Products
 );
 

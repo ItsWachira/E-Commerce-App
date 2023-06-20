@@ -75,7 +75,7 @@ const User_Register_User = async (req, res) => {
         res.status(201).json({
           status: "PENDING",
           success: true,
-          message: `Successfully registered${result.message}.Please authenticate your email.`,
+          message: `Successfully registered. ${result.message}. Please authenticate your email.`,
           data: {
             userId: newuser_id[0]._id,
             email: user_email,
@@ -223,7 +223,7 @@ const User_Resend_OTP_Code = async (req, res) => {
           res.status(201).json({
             status: "PENDING",
             success: true,
-            message: `Resend code operation successfully completed${result.message}.Please authenticate your email.`,
+            message: `Resend code operation successfully completed. ${result.message}. Please authenticate your email.`,
             data: {
               userId: userId,
               email: email,
@@ -328,7 +328,7 @@ const User_Logout_User = async (req, res) => {
       if (!token) {
         return res.status(401).json({
           success: false,
-          message: "Authorization failed",
+          message: "Authorization token missing",
         });
       }
       const tokens = req.user.tokens;

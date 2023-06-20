@@ -15,6 +15,10 @@ const ProductsSchema = new Schema(
     price: {
       type: Number,
     },
+    product_photo: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

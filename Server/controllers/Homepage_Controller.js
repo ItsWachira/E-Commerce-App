@@ -1,9 +1,10 @@
+const { error } = require("console");
+const Cart = require("../models/Cart");
+const Product = require("../models/Products");
 const UserDetails = require("../models/UserDetails");
+const Orders = require("../models/Orders");
 const path = require("path");
 
-const HomePage_Load_Page = (req, res) => {
-  res.status(200).json({ success: true });
-};
 const Homepage_Upload_Profile_Pic = async (req, res) => {
   const user = req.user;
 
@@ -34,7 +35,89 @@ const Homepage_Upload_Profile_Pic = async (req, res) => {
   }
 };
 
+const HomePage_Add_To_Cart = async (req, res) => {
+  try {
+    let productId = req.params.id;
+    let cart = new Cart(req.session.cart ? req.session.cart : {});
+
+    await Product.findById(productId)
+      .then((result) => {
+        cart.add(result, result._id);
+        req.session.cart = cart;
+        console.log(req.session.cart);
+        res.status(200).json({
+          success: true,
+          message: `The item has been successfully added to cart`,
+        });
+      })
+      .catch((error) => {
+        res.status(401).json({
+          success: false,
+          message:
+            "Could not find the products provided in the products collection",
+          error: err,
+        });
+      });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error: error while adding item to cart",
+      error: error,
+    });
+  }
+};
+
+const HomePage_Shopping_Cart_Details = (req, res) => {
+  if (!req.session.cart) {
+    res.status(200).json({
+      success: true,
+      message: `No shopping cart session: No items in the shopping cart`,
+    });
+  }
+  let cart = new Cart(req.session.cart);
+  res.status(201).json({
+    success: true,
+    message: `A shopping cart session exists`,
+    products: cart.generateArray(),
+    totalPrice: cart.totalPrice,
+  });
+};
+
+const Homepage_Checkout = async (req, res) => {
+  if (!req.session.cart) {
+    res.status(401).json({
+      success: false,
+      message: `No shopping cart available`,
+    });
+  }
+  var cart = new Cart(req.session.cart);
+
+  const Order = new Orders({
+    user: req.user,
+    cart: cart,
+    address: req.body.address,
+    name: req.body.name,
+  });
+  Order.save()
+    .then((result) => {
+      console.log("Order details successfully saved");
+    })
+    .catch((error) => {
+      res.status(400).json({
+        success: false,
+        message: "An error occured while saving the order details",
+      });
+    });
+  req.session.cart = null;
+  res.status(201).json({
+    success: true,
+    message: "The payment is successfully made",
+  });
+};
+
 module.exports = {
-  HomePage_Load_Page,
   Homepage_Upload_Profile_Pic,
+  HomePage_Add_To_Cart,
+  HomePage_Shopping_Cart_Details,
+  Homepage_Checkout,
 };

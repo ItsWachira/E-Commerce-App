@@ -9,6 +9,8 @@ const connectDatabase = require("./Database/Database");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const session = require("express-session");
+const path = require("path");
+var MongoStore = require("connect-mongo");
 const app = express();
 
 //connection to DB
@@ -25,6 +27,8 @@ const server = app.listen(process.env.APP_PORT, () => {
 app.use(morgan("dev"));
 app.use(cors());
 app.use("/", express.static("uploads"));
+app.use("/", express.static("uploads/profile_pics"));
+app.use("/", express.static("uploads/products"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -32,11 +36,21 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DBURI,
+    }),
+    cookie: {
+      maxAge: 180 * 60 * 1000,
+    },
   })
 );
 app.use(passport.initialize());
+app.use(passport.session());
+app.use(function (req, res, next) {
+  res.locals.session = req.session;
+  next();
+});
 
 // routes
 app.use("/api/auth", UserDetailsRoutes);

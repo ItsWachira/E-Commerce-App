@@ -1,8 +1,5 @@
-const mkdirp = require("mkdirp");
-const fs = require("fs-extra");
-const resize_img = require("resize-img");
-
 const Product = require("../models/Products");
+const path = require("path");
 
 const Admin_Dashboard_Page = (req, res) => {
   res.status(200).json({
@@ -13,11 +10,16 @@ const Admin_Dashboard_Page = (req, res) => {
 const Admin_Add_Products = async (req, res) => {
   try {
     const { name, desc, category, price } = req.body;
+    const filename = req.file.filename;
+    const fileUrl = path.join(filename);
+    const product_photo = fileUrl;
+    console.log(product_photo);
     const ProductDetails = await new Product({
       name,
       desc,
       category,
       price,
+      product_photo,
     })
       .save()
       .then((result) => {
