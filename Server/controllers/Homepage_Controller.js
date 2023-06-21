@@ -1,9 +1,31 @@
-const { error } = require("console");
 const Cart = require("../models/Cart");
 const Product = require("../models/Products");
 const UserDetails = require("../models/UserDetails");
 const Orders = require("../models/Orders");
 const path = require("path");
+
+const Homepage_User_Profile = async (req, res) => {
+  await Orders.find({ user: req.user })
+    .then((orders) => {
+      let cart;
+      orders.forEach(function (order) {
+        cart = new Cart(order.cart);
+        order.items = cart.generateArray();
+      });
+      res.status(200).json({
+        success: true,
+        message: "Cart details successfully fetched",
+        orders: orders,
+      });
+    })
+    .catch((error) => {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access. Try login in to view your profile",
+        error,
+      });
+    });
+};
 
 const Homepage_Upload_Profile_Pic = async (req, res) => {
   const user = req.user;
@@ -67,6 +89,34 @@ const HomePage_Add_To_Cart = async (req, res) => {
   }
 };
 
+const Homepage_Reduce_Cart_Items = (req, res) => {
+  let productId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  cart.reduceByOne(productId);
+  req.session.cart = cart;
+  console.log(req.session.cart);
+  res.status(200).json({
+    success: true,
+    message: `The items reduction operation from the cart was successful`,
+    redirect: req.session.oldURL,
+  });
+};
+
+const Homepage_Remove_Items = (req, res) => {
+  let productId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  cart.removeItem(productId);
+  req.session.cart = cart;
+  console.log(req.session.cart);
+  res.status(200).json({
+    success: true,
+    message: `The item selected was successfully removed from the cart`,
+    redirect: req.session.oldURL,
+  });
+};
+
 const HomePage_Shopping_Cart_Details = (req, res) => {
   if (!req.session.cart) {
     res.status(200).json({
@@ -116,8 +166,11 @@ const Homepage_Checkout = async (req, res) => {
 };
 
 module.exports = {
+  Homepage_User_Profile,
   Homepage_Upload_Profile_Pic,
   HomePage_Add_To_Cart,
+  Homepage_Reduce_Cart_Items,
+  Homepage_Remove_Items,
   HomePage_Shopping_Cart_Details,
   Homepage_Checkout,
 };

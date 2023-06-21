@@ -5,6 +5,13 @@ const { isAuth, isVerified } = require("../middleware/Auth");
 
 const uploads = require("../multer");
 
+router.get(
+  "/user-profile",
+  isAuth,
+  isVerified,
+  Homepage_Controllers.Homepage_User_Profile
+);
+
 router.post(
   "/upload-profile-pic",
   isAuth,
@@ -18,6 +25,20 @@ router.get(
   isVerified,
   Homepage_Controllers.HomePage_Add_To_Cart
 );
+
+router.get(
+  "/reduce-cart-items/:id",
+  isAuth,
+  isVerified,
+  Homepage_Controllers.Homepage_Reduce_Cart_Items
+);
+router.get(
+  "/remove-item/:id",
+  isAuth,
+  isVerified,
+  Homepage_Controllers.Homepage_Remove_Items
+);
+
 router.get(
   "/shopping-cart",
   isAuth,
