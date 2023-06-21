@@ -278,6 +278,8 @@ const User_Login_User = async (req, res) => {
           await UserDetails.findByIdAndUpdate(saved_user._id, {
             tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
           });
+          const oldURL = req.session.oldURL;
+          req.session.oldURL = null;
           console.log("success");
           res.status(200).json({
             success: true,
@@ -289,6 +291,7 @@ const User_Login_User = async (req, res) => {
               profile_pic: saved_user.profile_pic,
               phone: saved_user.phone,
             },
+            redirect: oldURL,
           });
         } else {
           console.log("Error");
